@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="EMPTY_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/budgie/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/budgie/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/budgie/target" />
+      <excludeFolder url="file://$MODULE_DIR$/budgie/target" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/anyhow-03558f25ea987085/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/anyhow-e1f554b474e8a16f/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/camino-739b7132c48feee8/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/camino-f3f98a14238abc87/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/crossbeam-utils-8247c1ba485a304f/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/generic-array-9ac5b97e0e20025e/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/generic-array-a10e55cebbd92e92/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/getrandom-4afaede7fbe496b2/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/getrandom-66f25f3d40638cbc/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/icu_normalizer_data-156959387bc0deb0/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/icu_properties_data-68ef7f1b98d542f4/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/leptos-0ce98fdec57b0142/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/leptos_macro-84c8b4fc5a6bf6f9/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/leptos_macro-8d70ccf1fa47ac04/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/libc-40017b32f6d552ec/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/libc-ffebc3ddc684d16d/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/parking_lot_core-73b34324d091f650/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/parking_lot_core-9e6d734a2c639a66/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/paste-7870a2f1f02ea5e4/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/paste-b7c4de1de08025bb/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/prettyplease-1da4bf3c3f7eaac1/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/prettyplease-2e16d85afbf61fe0/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/proc-macro2-401210e01342985d/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/proc-macro2-952a0e1468307de2/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/proc-macro2-diagnostics-49e29221ee0d0b6a/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/proc-macro2-diagnostics-70b55b0eb0dafac1/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/quote-cc7001a4d0a65068/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/quote-edea8e354870a807/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/reactive_graph-6f28a0dbe5dd5638/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/rustversion-1898eae5a255a4ec/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/rustversion-4b642df4be8ad09a/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/serde-46cb00e253923f81/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/serde-d0a7b7325214b882/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/serde-fef89be5e0aedca4/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/serde_core-0da1c04124d0566e/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/serde_core-59bef16afe765c1f/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/serde_core-730b54bd8aa491de/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/serde_json-389c9e3876cadf0c/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/server_fn-3aa858a3e4ac6cb5/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/server_fn_macro-20e29afb33e9c0bb/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/server_fn_macro-3679d0ffc35ee1ce/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/slotmap-3502147163878476/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/tachys-d3dc06a693f64981/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/thiserror-8d9485f38595e92d/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/thiserror-b6a7c7693d64f2b0/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/thiserror-e3b29a19691cddd9/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/typenum-4a85fd01047ac504/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/typenum-581cbbd31d5d5aa2/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/wasm-bindgen-2bb3e75b23f8a5e4/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/wasm-bindgen-a7911227327d8f95/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/wasm-bindgen-shared-2245d726ac8a8839/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/build/wasm-bindgen-shared-593bc9efe3cfcc91/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/debug/examples" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/anyhow-4e153da25a801be4/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/camino-73d508d2bc86930c/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/crossbeam-utils-4b8ef95d82412ff8/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/icu_normalizer_data-5c620decec1310f0/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/icu_properties_data-e04909158d3e3fb7/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/leptos-c3e1c6c69d84a1f8/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/libc-4aa1fee37d92691b/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/parking_lot_core-bf73999418ce74f4/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/proc-macro2-diagnostics-a85367179e6e5993/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/proc-macro2-f21a9ee758083c1f/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/quote-66ce4078abf15a6d/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/reactive_graph-e925886242ece0e9/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/serde-9157baf512e4924c/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/serde_core-bc4adf8046984e59/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/serde_json-062f63af2c831d7b/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/server_fn-82d8b4fecc2164cd/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/slotmap-7fa4a76e106ba41e/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/tachys-b8df4ccada924c74/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/thiserror-3a9389e7c34a6a78/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/thiserror-e499ba3e78f34c29/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/wasm-bindgen-487df3b2f94a41c0/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/build/wasm-bindgen-shared-2d1a880df6c5d8cb/out" />
+      <excludeFolder url="file://$MODULE_DIR$/target/wasm32-unknown-unknown/debug/examples" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
