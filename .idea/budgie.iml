@@ -2,11 +2,15 @@
 <module type="EMPTY_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/budget/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/budgie/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/budgie/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ehllo/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/budgie/target" />
       <excludeFolder url="file://$MODULE_DIR$/budgie/target" />
+      <excludeFolder url="file://$MODULE_DIR$/budget/target" />
+      <excludeFolder url="file://$MODULE_DIR$/ehllo/target" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
       <excludeFolder url="file://$MODULE_DIR$/target/debug/build/anyhow-03558f25ea987085/out" />
       <excludeFolder url="file://$MODULE_DIR$/target/debug/build/anyhow-e1f554b474e8a16f/out" />
