@@ -19,10 +19,28 @@ pub fn App() -> impl IntoView {
                 <div style="padding:10px; border:2px solid green; border-radius:10px;">
                     <h3>"Income"</h3>
                     <AddIncome />
+                    <ul>
+                        <For
+                            each=move || budget.with(|b| b.incomes().to_vec())
+                            key=|state| state.name.clone()
+                            let(income)
+                        >
+                            <li>{income.name}": £"{income.amount}</li>
+                        </For>
+                    </ul>
                 </div>
                 <div style="padding:10px; border:2px solid red; border-radius:10px;">
-                    <h3>"Expenditure"</h3>
+                    <h3>"Outgoing"</h3>
                     <AddExpenditure />
+                    <ul>
+                        <For
+                            each=move || budget.with(|b| b.expenditures().to_vec())
+                            key=|state| state.name.clone()
+                            let(expenditure)
+                        >
+                            <li>{expenditure.name}": £"{expenditure.amount}</li>
+                        </For>
+                    </ul>
                 </div>
             </div>
         </div>
