@@ -1,4 +1,5 @@
-use budgie::{Budget, Income};
+use budgie::Budget;
+use leptos::leptos_dom::logging::console_error;
 use leptos::prelude::*;
 
 #[component]
@@ -34,7 +35,9 @@ pub fn AddIncome() -> impl IntoView {
                 on:click=move |_| {
                     budget
                         .update(move |b: &mut Budget| {
-                            b.add_income(Income::new(name.get(), amount.get()))
+                            if let Err(e) = b.add_income(name.get(), amount.get()) {
+                                console_error(&e);
+                            }
                         });
                     set_name.set(String::new());
                     set_amount.set(0f64);

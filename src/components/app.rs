@@ -1,4 +1,4 @@
-use budgie::Budget;
+use budgie::{Budget, Expenditure, Income};
 use leptos::prelude::*;
 
 use crate::components::{add_expenditure::AddExpenditure, add_income::AddIncome};
@@ -19,28 +19,56 @@ pub fn App() -> impl IntoView {
                 <div style="padding:10px; border:2px solid green; border-radius:10px;">
                     <h3>"Income"</h3>
                     <AddIncome />
-                    <ul>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
                         <For
                             each=move || budget.with(|b| b.incomes().to_vec())
-                            key=|state| state.name.clone()
-                            let(income)
+                            key=|state| state.id
+                            let(Income { id, name, amount })
                         >
-                            <li>{income.name}": £"{income.amount}</li>
+                            <div style="margin-top: 10px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                                <span>{name}</span>
+                                <span>{amount}</span>
+                                <button
+                                    type="button"
+                                    on:click=move |_| {
+                                        budget
+                                            .update(move |b: &mut Budget| {
+                                                b.remove_income(id);
+                                            });
+                                    }
+                                >
+                                    "-"
+                                </button>
+                            </div>
                         </For>
-                    </ul>
+                    </div>
                 </div>
                 <div style="padding:10px; border:2px solid red; border-radius:10px;">
                     <h3>"Outgoing"</h3>
                     <AddExpenditure />
-                    <ul>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
                         <For
                             each=move || budget.with(|b| b.expenditures().to_vec())
-                            key=|state| state.name.clone()
-                            let(expenditure)
+                            key=|state| state.id
+                            let(Expenditure { id, name, amount })
                         >
-                            <li>{expenditure.name}": £"{expenditure.amount}</li>
+                            <div style="margin-top: 10px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                                <span>{name}</span>
+                                <span>{amount}</span>
+                                <button
+                                    type="button"
+                                    on:click=move |_| {
+                                        budget
+                                            .update(move |b: &mut Budget| {
+                                                b.remove_expenditure(id);
+                                            });
+                                    }
+                                >
+                                    "-"
+                                </button>
+                            </div>
                         </For>
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>
