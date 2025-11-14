@@ -2,20 +2,26 @@
 pub struct Budget {
     incomes: Vec<Income>,
     expenditures: Vec<Expenditure>,
-    next_income_id: u32,
-    next_expenditure_id: u32,
+    next_income_id: IncomeId,
+    next_expenditure_id: ExpenditureId,
 }
+
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct IncomeId(u32);
 
 #[derive(Default, Clone)]
 pub struct Income {
-    pub id: u32,
+    pub id: IncomeId,
     pub name: String,
     pub amount: f64,
 }
 
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct ExpenditureId(u32);
+
 #[derive(Default, Clone)]
 pub struct Expenditure {
-    pub id: u32,
+    pub id: ExpenditureId,
     pub name: String,
     pub amount: f64,
 }
@@ -52,7 +58,7 @@ impl Budget {
 
         let income = Income::new(self.next_income_id, name, amount);
 
-        self.next_income_id = self.next_income_id + 1;
+        self.next_income_id = IncomeId(self.next_income_id.0 + 1);
 
         self.incomes.push(income);
 
@@ -70,30 +76,30 @@ impl Budget {
 
         let expenditure = Expenditure::new(self.next_expenditure_id, name, amount);
 
-        self.next_expenditure_id = self.next_expenditure_id + 1;
+        self.next_expenditure_id = ExpenditureId(self.next_expenditure_id.0 + 1);
 
         self.expenditures.push(expenditure);
 
         Ok(())
     }
 
-    pub fn remove_income(&mut self, id: u32) {
+    pub fn remove_income(&mut self, id: IncomeId) {
         self.incomes.retain(|i| i.id != id);
     }
 
-    pub fn remove_expenditure(&mut self, id: u32) {
+    pub fn remove_expenditure(&mut self, id: ExpenditureId) {
         self.expenditures.retain(|e| e.id != id);
     }
 }
 
 impl Income {
-    pub fn new(id: u32, name: String, amount: f64) -> Income {
+    pub fn new(id: IncomeId, name: String, amount: f64) -> Income {
         Income { id, name, amount }
     }
 }
 
 impl Expenditure {
-    pub fn new(id: u32, name: String, amount: f64) -> Expenditure {
+    pub fn new(id: ExpenditureId, name: String, amount: f64) -> Expenditure {
         Expenditure { id, name, amount }
     }
 }
