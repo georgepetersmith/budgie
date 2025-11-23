@@ -1,7 +1,7 @@
-use crate::components::budget_summary::BudgetSummary;
-use crate::components::expenditure::Expenditure;
-use crate::components::income::Income;
-use budgie::Budget;
+use std::ops::Neg;
+
+use crate::components::{add_expenditure::AddExpenditure, add_income::AddIncome};
+use budgie::{Budget, Expenditure, Income};
 use leptos::prelude::*;
 
 #[component]
@@ -9,12 +9,114 @@ pub fn App() -> impl IntoView {
     let budget = RwSignal::new(Budget::default());
     provide_context(budget);
     view! {
-        <div style="padding:50px;">
-            <BudgetSummary />
-            <div style="margin-top: 50px; display:flex; align-items:flex-start; gap:50px;">
-                <Income />
-                <Expenditure />
-            </div>
+        <div class="app">
+            <h1>My Budget</h1>
+            <section class="summary">
+                <div class="card" style="flex-grow:1;">
+                    <div class="card-title">"TOTAL INCOME"</div>
+                    <div class="card-value positive">
+                        {move || format!("£{:.2}", budget.get().total_income().abs())}
+                    </div>
+                </div>
+                <div class="card" style="flex-grow:1;">
+                    <div class="card-title">"TOTAL OUTGOING"</div>
+                    <div class="card-value negative">
+                        {move || format!("£{:.2}", budget.get().total_expenditure().abs())}
+                    </div>
+                </div>
+                <div class="card" style="flex-grow:1;">
+                    <div class="card-title">"CURRENT BALANCE"</div>
+                    <div
+                        class="card-value"
+                        class:positive=move || budget.get().balance().ge(&0f64)
+                        class:negative=move || budget.get().balance().lt(&0f64)
+                    >
+                        {move || format!("£{:.2}", budget.get().balance())}
+                    </div>
+                </div>
+            </section>
+            <section style="display:flex; gap:30px; margin-top: 60px; ">
+                <div style="display:flex; flex-direction:column; flex-grow:1; gap:30px;">
+                    <div class="card">
+                        <div class="section-title">"ADD INCOME"</div>
+                        <AddIncome />
+                    </div>
+                    <div class="card">
+                        <div class="section-title">"ADD OUTGOING"</div>
+                        <AddExpenditure />
+                    </div>
+                </div>
+                <div style="flex-grow:3;">
+                    <div class="card">
+                        <div class="section-title">"LEDGER"</div>
+                        <div style="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="entries-body">
+                                    <For
+                                        each=move || budget.with(|b| b.incomes().to_vec())
+                                        key=|state| state.id
+                                        let(Income { id, name, amount })
+                                    >
+                                        <tr>
+                                            <td class="badge badge-income">"Income"</td>
+                                            <td>{name}</td>
+                                            <td class="amount-income">
+                                                {move || format!("£{:.2}", amount)}
+                                            </td>
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    on:click=move |_| {
+                                                        budget
+                                                            .update(move |b: &mut Budget| {
+                                                                b.remove_income(id);
+                                                            });
+                                                    }
+                                                >
+                                                    "-"
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </For>
+                                    <For
+                                        each=move || budget.with(|b| b.expenditures().to_vec())
+                                        key=|state| state.id
+                                        let(Expenditure { id, name, amount })
+                                    >
+                                        <tr>
+                                            <td class="badge badge-expense">"Outgoing"</td>
+                                            <td>{name}</td>
+                                            <td class="amount-expense">
+                                                {move || format!("£{:.2}", amount.neg())}
+                                            </td>
+                                            <td>
+                                                <button
+                                                    type="button"
+                                                    on:click=move |_| {
+                                                        budget
+                                                            .update(move |b: &mut Budget| {
+                                                                b.remove_expenditure(id);
+                                                            });
+                                                    }
+                                                >
+                                                    "-"
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </For>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     }
 }

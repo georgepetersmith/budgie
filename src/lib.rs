@@ -1,3 +1,5 @@
+use std::ops::Sub;
+
 #[derive(Default, Clone)]
 pub struct Budget {
     incomes: Vec<Income>,
@@ -44,7 +46,7 @@ impl Budget {
     }
 
     pub fn balance(&mut self) -> f64 {
-        self.total_income() - self.total_expenditure()
+        self.total_income().sub(self.total_expenditure())
     }
 
     pub fn add_income(&mut self, name: String, amount: f64) -> Result<(), String> {

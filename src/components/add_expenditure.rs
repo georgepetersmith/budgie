@@ -8,12 +8,12 @@ pub fn AddExpenditure() -> impl IntoView {
     let (name, set_name) = signal(String::new());
     let (amount, set_amount) = signal(0.0f64);
     view! {
-        <div style="display:flex; align-items:center; gap:10px;">
+        <div style="display:flex; flex-direction:column; gap:10px;">
             <input
                 type="text"
                 name="name"
                 prop:value=name
-                placeholder="Name"
+                placeholder="e.g. Broadband"
                 on:input=move |ev| {
                     let val = event_target_value(&ev);
                     set_name.set(val);
@@ -22,6 +22,7 @@ pub fn AddExpenditure() -> impl IntoView {
             <input
                 type="number"
                 name="amount"
+                placeholder="e.g. 50.99"
                 prop:value=amount
                 on:input=move |ev| {
                     let val = event_target_value(&ev);
@@ -31,6 +32,7 @@ pub fn AddExpenditure() -> impl IntoView {
                 }
             />
             <button
+                style="width:50%; margin-left:auto; background:#22c55e;"
                 type="button"
                 on:click=move |_| {
                     budget
@@ -43,7 +45,7 @@ pub fn AddExpenditure() -> impl IntoView {
                     set_amount.set(0f64);
                 }
             >
-                "+"
+                "+ Add Outgoing"
             </button>
         </div>
     }
