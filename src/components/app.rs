@@ -1,13 +1,42 @@
-use std::ops::Neg;
-
 use crate::components::{add_expenditure::AddExpenditure, add_income::AddIncome};
 use budgie::{Budget, Expenditure, Income};
 use leptos::prelude::*;
 
 #[component]
 pub fn App() -> impl IntoView {
-    let budget = RwSignal::new(Budget::default());
+    let budget = {
+        let file_str = include_str!("../../my_budget.json");
+        let json =
+            serde_json::from_str::<serde_json::Value>(&file_str).expect("valid test budget json");
+        let income_values = json["incomes"].as_array().unwrap();
+        let expenditure_values = json["outgoings"].as_array().unwrap();
+
+        let mut budget = Budget::default();
+
+        for income in income_values.into_iter() {
+            budget
+                .add_income(
+                    income["name"].as_str().unwrap().to_string(),
+                    income["amount"].as_number().unwrap().as_f64().unwrap(),
+                )
+                .unwrap();
+        }
+
+        for expenditure in expenditure_values.into_iter() {
+            budget
+                .add_expenditure(
+                    expenditure["name"].as_str().unwrap().to_string(),
+                    expenditure["amount"].as_number().unwrap().as_f64().unwrap(),
+                )
+                .unwrap();
+        }
+
+        budget
+    };
+
+    let budget = RwSignal::new(budget);
     provide_context(budget);
+
     view! {
         <div class="app">
             <h1>My Budget</h1>
@@ -56,6 +85,7 @@ pub fn App() -> impl IntoView {
                                         <th>Type</th>
                                         <th>Description</th>
                                         <th>Amount</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody id="entries-body">
@@ -94,7 +124,7 @@ pub fn App() -> impl IntoView {
                                             <td class="badge badge-expense">"Outgoing"</td>
                                             <td>{name}</td>
                                             <td class="amount-expense">
-                                                {move || format!("£{:.2}", amount.neg())}
+                                                {move || format!("£{:.2}", amount)}
                                             </td>
                                             <td>
                                                 <button
