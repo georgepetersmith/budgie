@@ -1,6 +1,7 @@
 use std::ops::Sub;
+use serde::{ Deserialize, Serialize };
 
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Serialize, Deserialize)]
 pub struct Budget {
     incomes: Vec<Income>,
     expenditures: Vec<Expenditure>,
@@ -10,10 +11,10 @@ pub struct Budget {
     accounts: Vec<Account>,
 }
 
-#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub struct IncomeId(u32);
 
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Serialize, Deserialize)]
 pub struct Income {
     pub id: IncomeId,
     pub name: String,
@@ -21,10 +22,10 @@ pub struct Income {
     pub account_id: AccountId,
 }
 
-#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub struct ExpenditureId(u32);
 
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Serialize, Deserialize)]
 pub struct Expenditure {
     pub id: ExpenditureId,
     pub name: String,
@@ -33,16 +34,16 @@ pub struct Expenditure {
     pub commitment: Option<AccountCommitment>,
 }
 
-#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub struct AccountId(pub u32);
 
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Serialize, Deserialize)]
 pub struct Account {
     pub id: AccountId,
     pub name: String,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Serialize, Deserialize)]
 pub enum AccountCommitment {
     PullAuthorisation,
     ScheduledTransfer,

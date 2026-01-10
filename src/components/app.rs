@@ -1,55 +1,12 @@
 use crate::components::{add_expenditure::AddExpenditure, add_income::AddIncome};
-use budgie::{AccountCommitment, AccountId, Budget, Expenditure, Income};
+use budgie::{Budget, Expenditure, Income};
 use leptos::prelude::*;
 
 #[component]
 pub fn App() -> impl IntoView {
     let budget = {
         let file_str = include_str!("../../my_budget.json");
-        let json =
-            serde_json::from_str::<serde_json::Value>(file_str).expect("valid test budget json");
-        let income_values = json["incomes"].as_array().unwrap();
-        let expenditure_values = json["outgoings"].as_array().unwrap();
-        let account_values = json["accounts"].as_array().unwrap();
-
-        let mut budget = Budget::default();
-
-        for account in account_values.iter() {
-            budget
-                .add_account(account["name"].as_str().unwrap().to_string())
-                .unwrap();
-        }
-
-        for income in income_values.iter() {
-            budget
-                .add_income(
-                    income["name"].as_str().unwrap().to_string(),
-                    income["amount"].as_number().unwrap().as_f64().unwrap(),
-                    AccountId(income["account"].as_u64().unwrap() as u32),
-                )
-                .unwrap();
-        }
-
-        for expenditure in expenditure_values.iter() {
-            let commitment = match expenditure.get("commitment") {
-                None => None,
-                Some(ref commitment) => match commitment["type"].as_str().unwrap() {
-                    "PullAuthorisation" => Some(AccountCommitment::PullAuthorisation),
-                    "ScheduledTransfer" => Some(AccountCommitment::ScheduledTransfer),
-                    "Subscription" => Some(AccountCommitment::Subscription),
-                    _ => panic!("commitment type not recognised"),
-                },
-            };
-            budget
-                .add_expenditure(
-                    expenditure["name"].as_str().unwrap().to_string(),
-                    expenditure["amount"].as_number().unwrap().as_f64().unwrap(),
-                    AccountId(expenditure["account"].as_u64().unwrap() as u32),
-                    commitment,
-                )
-                .unwrap();
-        }
-
+        let budget: Budget = serde_json::from_str::<Budget>(file_str).expect("valid json");
         budget
     };
 
