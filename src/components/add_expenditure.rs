@@ -37,7 +37,7 @@ pub fn AddExpenditure() -> impl IntoView {
                 on:click=move |_| {
                     budget
                         .update(move |b: &mut Budget| {
-                            if let Err(e) = b.add_expenditure(name.get(), amount.get()) {
+                            if let Err(e) = b.add_expenditure(name.get(), amount.get(), None) {
                                 console_error(&e);
                             }
                         });

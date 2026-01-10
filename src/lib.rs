@@ -6,6 +6,8 @@ pub struct Budget {
     expenditures: Vec<Expenditure>,
     next_income_id: IncomeId,
     next_expenditure_id: ExpenditureId,
+    next_account_id: AccountId,
+    accounts: Vec<Account>,
 }
 
 #[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -16,6 +18,7 @@ pub struct Income {
     pub id: IncomeId,
     pub name: String,
     pub amount: f64,
+    pub account_id: AccountId,
 }
 
 #[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -26,6 +29,23 @@ pub struct Expenditure {
     pub id: ExpenditureId,
     pub name: String,
     pub amount: f64,
+    pub commitment: Option<AccountCommitment>,
+}
+
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub struct AccountId(pub u32);
+
+#[derive(Default, Clone)]
+pub struct Account {
+    pub id: AccountId,
+    pub name: String,
+}
+
+#[derive(Clone)]
+pub enum AccountCommitment {
+    PullAuthorisation { account_id: AccountId },
+    ScheduledTransfer { account_id: AccountId },
+    Subscription { account_id: AccountId },
 }
 
 impl Budget {
@@ -33,8 +53,16 @@ impl Budget {
         &self.incomes
     }
 
-    pub fn expenditures(&self) -> &Vec<Expenditure> {
+    pub fn expenditures(&self) -> &[Expenditure] {
         &self.expenditures
+    }
+
+    pub fn accounts(&self) -> &[Account] {
+        &self.accounts
+    }
+
+    pub fn get_account(&self, account_id: &AccountId) -> Option<&Account> {
+        self.accounts().iter().find(|a| a.id.eq(account_id))
     }
 
     pub fn total_income(&self) -> f64 {
@@ -49,7 +77,16 @@ impl Budget {
         self.total_income().sub(self.total_expenditure())
     }
 
-    pub fn add_income(&mut self, name: String, amount: f64) -> Result<(), String> {
+    pub fn add_income(
+        &mut self,
+        name: String,
+        amount: f64,
+        account_id: AccountId,
+    ) -> Result<(), String> {
+        if String::is_empty(&name) || name.chars().all(char::is_whitespace) {
+            return Err("Name cannot be empty".to_string());
+        }
+
         if self
             .incomes
             .iter()
@@ -58,7 +95,11 @@ impl Budget {
             return Err("Income with name already exists".to_string());
         }
 
-        let income = Income::new(self.next_income_id, name, amount);
+        if self.accounts.iter().all(|i| i.id.ne(&account_id)) {
+            return Err("Account not found in budget".to_string());
+        }
+
+        let income = Income::new(self.next_income_id, name, amount, account_id);
 
         self.next_income_id = IncomeId(self.next_income_id.0 + 1);
 
@@ -67,7 +108,16 @@ impl Budget {
         Ok(())
     }
 
-    pub fn add_expenditure(&mut self, name: String, amount: f64) -> Result<(), String> {
+    pub fn add_expenditure(
+        &mut self,
+        name: String,
+        amount: f64,
+        commitment: Option<AccountCommitment>,
+    ) -> Result<(), String> {
+        if String::is_empty(&name) || name.chars().all(char::is_whitespace) {
+            return Err("Name cannot be empty".to_string());
+        }
+
         if self
             .expenditures
             .iter()
@@ -76,7 +126,24 @@ impl Budget {
             return Err("Expenditure with name already exists".to_string());
         }
 
-        let expenditure = Expenditure::new(self.next_expenditure_id, name, amount);
+        let account_id = {
+            match commitment {
+                None => None,
+                Some(ref commitment) => match commitment {
+                    AccountCommitment::PullAuthorisation { account_id } => Some(account_id),
+                    AccountCommitment::ScheduledTransfer { account_id } => Some(account_id),
+                    AccountCommitment::Subscription { account_id } => Some(account_id),
+                },
+            }
+        };
+
+        if let Some(account_id) = account_id {
+            if self.accounts.iter().all(|i| i.id.ne(&account_id)) {
+                return Err("Account not found in budget".to_string());
+            }
+        }
+
+        let expenditure = Expenditure::new(self.next_expenditure_id, name, amount, commitment);
 
         self.next_expenditure_id = ExpenditureId(self.next_expenditure_id.0 + 1);
 
@@ -92,16 +159,73 @@ impl Budget {
     pub fn remove_expenditure(&mut self, id: ExpenditureId) {
         self.expenditures.retain(|e| e.id != id);
     }
+
+    pub fn remove_account(&mut self, id: AccountId) -> Result<(), String> {
+        if self.incomes.iter().any(|i| i.account_id.eq(&id)) {
+            return Err("Incomes linked to account".to_string());
+        }
+
+        if self.incomes.iter().any(|i| i.account_id.eq(&id)) {
+            return Err("Expenditures linked to account".to_string());
+        }
+
+        self.accounts.retain(|i| i.id != id);
+
+        Ok(())
+    }
+
+    pub fn add_account(&mut self, name: String) -> Result<(), String> {
+        if String::is_empty(&name) || name.chars().all(char::is_whitespace) {
+            return Err("Name cannot be empty".to_string());
+        }
+
+        if self
+            .accounts
+            .iter()
+            .any(|i| i.name.eq_ignore_ascii_case(&name))
+        {
+            return Err("Account with name already exists".to_string());
+        }
+
+        let account = Account::new(self.next_account_id, name);
+
+        self.next_account_id = AccountId(self.next_account_id.0 + 1);
+
+        self.accounts.push(account);
+
+        Ok(())
+    }
 }
 
 impl Income {
-    pub fn new(id: IncomeId, name: String, amount: f64) -> Income {
-        Income { id, name, amount }
+    fn new(id: IncomeId, name: String, amount: f64, account_id: AccountId) -> Income {
+        Income {
+            id,
+            name,
+            amount,
+            account_id,
+        }
     }
 }
 
 impl Expenditure {
-    pub fn new(id: ExpenditureId, name: String, amount: f64) -> Expenditure {
-        Expenditure { id, name, amount }
+    fn new(
+        id: ExpenditureId,
+        name: String,
+        amount: f64,
+        commitment: Option<AccountCommitment>,
+    ) -> Expenditure {
+        Expenditure {
+            id,
+            name,
+            amount,
+            commitment,
+        }
+    }
+}
+
+impl Account {
+    fn new(id: AccountId, name: String) -> Account {
+        Account { id, name }
     }
 }
