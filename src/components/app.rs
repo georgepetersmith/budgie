@@ -1,5 +1,5 @@
 use crate::components::{add_expenditure::AddExpenditure, add_income::AddIncome};
-use budgie::{Budget, Expenditure, Income};
+use budgie::{Account, Budget, Expenditure, Income};
 use leptos::prelude::*;
 
 #[component]
@@ -40,6 +40,32 @@ pub fn App() -> impl IntoView {
                     </div>
                 </div>
             </section>
+            <section style="display:flex; flex-direction:column; gap:30px; margin-top: 60px; ">
+                <For
+                    each=move || budget.with(|b| b.accounts().to_vec())
+                    key=|state| state.id
+                    let(Account { id, name })
+                >
+                    <div class="card" style="flex-grow:1;">
+                        <div class="card-title">{name}</div>
+                        <div class="card-value negative">
+                            {move || {
+                                format!(
+                                    "£{:.2}",
+                                    budget
+                                        .get()
+                                        .expenditures()
+                                        .iter()
+                                        .filter(|e| e.account_id.eq(&id))
+                                        .map(|e| e.amount)
+                                        .sum::<f64>()
+                                        .abs(),
+                                )
+                            }}
+                        </div>
+                    </div>
+                </For>
+            </section>
             <section style="display:flex; gap:30px; margin-top: 60px; ">
                 <div style="display:flex; flex-direction:column; flex-grow:1; gap:30px;">
                     <div class="card">
@@ -59,8 +85,8 @@ pub fn App() -> impl IntoView {
                                 <thead>
                                     <tr>
                                         <th>"Type"</th>
-                                        <th>"Description"</th>
                                         <th>"Amount"</th>
+                                        <th>"Description"</th>
                                         <th>"Account"</th>
                                         <th></th>
                                     </tr>
@@ -73,10 +99,10 @@ pub fn App() -> impl IntoView {
                                     >
                                         <tr>
                                             <td class="badge badge-income">"Income"</td>
-                                            <td>{name}</td>
                                             <td class="amount-income">
                                                 {move || format!("£{:.2}", amount)}
                                             </td>
+                                            <td>{name}</td>
                                             <td>
                                                 {move || {
                                                     budget
@@ -106,14 +132,20 @@ pub fn App() -> impl IntoView {
                                     <For
                                         each=move || budget.with(|b| b.expenditures().to_vec())
                                         key=|state| state.id
-                                        let(Expenditure { id, name, amount, account_id, commitment: _ })
+                                        let(Expenditure {
+                                            id,
+                                            name,
+                                            amount,
+                                            account_id,
+                                            commitment: _,
+                                        })
                                     >
                                         <tr>
                                             <td class="badge badge-expense">"Outgoing"</td>
-                                            <td>{name}</td>
                                             <td class="amount-expense">
                                                 {move || format!("£{:.2}", amount)}
                                             </td>
+                                            <td>{name}</td>
                                             <td>
                                                 {move || {
                                                     budget
