@@ -61,7 +61,7 @@ pub fn AddIncome() -> impl IntoView {
                     set_amount.set(0f64);
                 }
             >
-                "+ Add Income"
+                "+"
             </button>
         </div>
     }

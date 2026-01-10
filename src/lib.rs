@@ -29,6 +29,7 @@ pub struct Expenditure {
     pub id: ExpenditureId,
     pub name: String,
     pub amount: f64,
+    pub account_id: AccountId,
     pub commitment: Option<AccountCommitment>,
 }
 
@@ -43,9 +44,9 @@ pub struct Account {
 
 #[derive(Clone)]
 pub enum AccountCommitment {
-    PullAuthorisation { account_id: AccountId },
-    ScheduledTransfer { account_id: AccountId },
-    Subscription { account_id: AccountId },
+    PullAuthorisation,
+    ScheduledTransfer,
+    Subscription,
 }
 
 impl Budget {
@@ -112,6 +113,7 @@ impl Budget {
         &mut self,
         name: String,
         amount: f64,
+        account_id: AccountId,
         commitment: Option<AccountCommitment>,
     ) -> Result<(), String> {
         if String::is_empty(&name) || name.chars().all(char::is_whitespace) {
@@ -126,24 +128,11 @@ impl Budget {
             return Err("Expenditure with name already exists".to_string());
         }
 
-        let account_id = {
-            match commitment {
-                None => None,
-                Some(ref commitment) => match commitment {
-                    AccountCommitment::PullAuthorisation { account_id } => Some(account_id),
-                    AccountCommitment::ScheduledTransfer { account_id } => Some(account_id),
-                    AccountCommitment::Subscription { account_id } => Some(account_id),
-                },
-            }
-        };
-
-        if let Some(account_id) = account_id {
-            if self.accounts.iter().all(|i| i.id.ne(&account_id)) {
-                return Err("Account not found in budget".to_string());
-            }
+        if self.accounts.iter().all(|i| i.id.ne(&account_id)) {
+            return Err("Account not found in budget".to_string());
         }
 
-        let expenditure = Expenditure::new(self.next_expenditure_id, name, amount, commitment);
+        let expenditure = Expenditure::new(self.next_expenditure_id, name, amount, account_id, commitment);
 
         self.next_expenditure_id = ExpenditureId(self.next_expenditure_id.0 + 1);
 
@@ -213,12 +202,14 @@ impl Expenditure {
         id: ExpenditureId,
         name: String,
         amount: f64,
+        account_id: AccountId,
         commitment: Option<AccountCommitment>,
     ) -> Expenditure {
         Expenditure {
             id,
             name,
             amount,
+            account_id,
             commitment,
         }
     }

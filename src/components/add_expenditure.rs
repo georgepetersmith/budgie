@@ -1,4 +1,4 @@
-use budgie::Budget;
+use budgie::{Account, AccountId, Budget};
 use leptos::leptos_dom::logging::console_error;
 use leptos::prelude::*;
 
@@ -7,6 +7,7 @@ pub fn AddExpenditure() -> impl IntoView {
     let budget = use_context::<RwSignal<Budget>>().unwrap();
     let (name, set_name) = signal(String::new());
     let (amount, set_amount) = signal(0.0f64);
+    let (account, set_account) = signal(AccountId(0));
     view! {
         <div style="display:flex; flex-direction:column; gap:10px;">
             <input
@@ -31,13 +32,28 @@ pub fn AddExpenditure() -> impl IntoView {
                     }
                 }
             />
+            <select
+                on:change:target=move |ev| {
+                    set_account.set(AccountId(ev.target().value().parse().unwrap()));
+                }
+                prop:value=move || account.get().0
+            >
+
+                <For
+                    each=move || budget.with(|b| b.accounts().to_vec())
+                    key=|state| state.id
+                    let(Account { id, name })
+                >
+                    <option value=id.0>{name}</option>
+                </For>
+            </select>
             <button
                 style="width:50%; margin-left:auto; background:#22c55e;"
                 type="button"
                 on:click=move |_| {
                     budget
                         .update(move |b: &mut Budget| {
-                            if let Err(e) = b.add_expenditure(name.get(), amount.get(), None) {
+                            if let Err(e) = b.add_expenditure(name.get(), amount.get(), account.get(), None) {
                                 console_error(&e);
                             }
                         });
@@ -45,7 +61,7 @@ pub fn AddExpenditure() -> impl IntoView {
                     set_amount.set(0f64);
                 }
             >
-                "+ Add Outgoing"
+                "+"
             </button>
         </div>
     }

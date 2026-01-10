@@ -34,22 +34,17 @@ pub fn App() -> impl IntoView {
             let commitment = match expenditure.get("commitment") {
                 None => None,
                 Some(ref commitment) => match commitment["type"].as_str().unwrap() {
-                    "PullAuthorisation" => Some(AccountCommitment::PullAuthorisation {
-                        account_id: AccountId(commitment["account"].as_u64().unwrap() as u32),
-                    }),
-                    "ScheduledTransfer" => Some(AccountCommitment::ScheduledTransfer {
-                        account_id: AccountId(commitment["account"].as_u64().unwrap() as u32),
-                    }),
-                    "Subscription" => Some(AccountCommitment::Subscription {
-                        account_id: AccountId(commitment["account"].as_u64().unwrap() as u32),
-                    }),
-                    _ => panic!(),
+                    "PullAuthorisation" => Some(AccountCommitment::PullAuthorisation),
+                    "ScheduledTransfer" => Some(AccountCommitment::ScheduledTransfer),
+                    "Subscription" => Some(AccountCommitment::Subscription),
+                    _ => panic!("commitment type not recognised"),
                 },
             };
             budget
                 .add_expenditure(
                     expenditure["name"].as_str().unwrap().to_string(),
                     expenditure["amount"].as_number().unwrap().as_f64().unwrap(),
+                    AccountId(expenditure["account"].as_u64().unwrap() as u32),
                     commitment,
                 )
                 .unwrap();
@@ -154,7 +149,7 @@ pub fn App() -> impl IntoView {
                                     <For
                                         each=move || budget.with(|b| b.expenditures().to_vec())
                                         key=|state| state.id
-                                        let(Expenditure { id, name, amount, commitment })
+                                        let(Expenditure { id, name, amount, account_id, commitment: _ })
                                     >
                                         <tr>
                                             <td class="badge badge-expense">"Outgoing"</td>
@@ -163,36 +158,14 @@ pub fn App() -> impl IntoView {
                                                 {move || format!("£{:.2}", amount)}
                                             </td>
                                             <td>
-                                                {move || match commitment {
-                                                    None => "".to_string(),
-                                                    Some(ref commitment) => {
-                                                        match commitment {
-                                                            AccountCommitment::PullAuthorisation { account_id } => {
-                                                                budget
-                                                                    .get()
-                                                                    .get_account(account_id)
-                                                                    .expect("account exists")
-                                                                    .name
-                                                                    .clone()
-                                                            }
-                                                            AccountCommitment::ScheduledTransfer { account_id } => {
-                                                                budget
-                                                                    .get()
-                                                                    .get_account(account_id)
-                                                                    .expect("account exists")
-                                                                    .name
-                                                                    .clone()
-                                                            }
-                                                            AccountCommitment::Subscription { account_id } => {
-                                                                budget
-                                                                    .get()
-                                                                    .get_account(account_id)
-                                                                    .expect("account exists")
-                                                                    .name
-                                                                    .clone()
-                                                            }
-                                                        }
-                                                    }
+                                                {move || {
+                                                    budget
+                                                        .with(|b| {
+                                                            b.get_account(&account_id)
+                                                                .expect("account exists")
+                                                                .name
+                                                                .clone()
+                                                        })
                                                 }}
                                             </td>
                                             <td>
