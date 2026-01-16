@@ -6,8 +6,7 @@ use leptos::prelude::*;
 pub fn App() -> impl IntoView {
     let budget = {
         let file_str = include_str!("../../my_budget.json");
-        let budget: Budget = serde_json::from_str::<Budget>(file_str).expect("valid json");
-        budget
+        serde_json::from_str::<Budget>(file_str).unwrap_or_default()
     };
 
     let budget = RwSignal::new(budget);

@@ -1,17 +1,26 @@
-// Project tasks configuration. See https://zed.dev/docs/tasks for documentation.
-//
-// Example:
 [
-    {
-        "label": "Serve",
-        "command": "trunk serve",
-        "use_new_terminal": true,
-        "allow_concurrent_runs": false,
-        "reveal": "always",
-        "reveal_target": "dock",
-        "hide": "never",
-        "shell": "system",
-        "show_summary": true,
-        "show_command": true
-    }
+  {
+    "label": "Serve",
+    "command": "trunk serve",
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "reveal_target": "dock",
+    "hide": "never",
+    "shell": "system",
+    "show_summary": true,
+    "show_command": true
+  },
+  {
+    "label": "Bacon",
+    "command": "bacon",
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "reveal_target": "dock",
+    "hide": "never",
+    "shell": "system",
+    "show_summary": true,
+    "show_command": true
+  }
 ]
