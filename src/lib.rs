@@ -1,8 +1,9 @@
+use serde::{Deserialize, Serialize};
 use std::ops::Sub;
-use serde::{ Deserialize, Serialize };
 
 #[derive(Default, Clone, Serialize, Deserialize)]
 pub struct Budget {
+    name: String,
     incomes: Vec<Income>,
     expenditures: Vec<Expenditure>,
     next_income_id: IncomeId,
@@ -11,7 +12,9 @@ pub struct Budget {
     accounts: Vec<Account>,
 }
 
-#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[derive(
+    Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,
+)]
 pub struct IncomeId(u32);
 
 #[derive(Default, Clone, Serialize, Deserialize)]
@@ -22,7 +25,9 @@ pub struct Income {
     pub account_id: AccountId,
 }
 
-#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[derive(
+    Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,
+)]
 pub struct ExpenditureId(u32);
 
 #[derive(Default, Clone, Serialize, Deserialize)]
@@ -34,7 +39,9 @@ pub struct Expenditure {
     pub commitment: Option<AccountCommitment>,
 }
 
-#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[derive(
+    Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize,
+)]
 pub struct AccountId(pub u32);
 
 #[derive(Default, Clone, Serialize, Deserialize)]
@@ -51,6 +58,22 @@ pub enum AccountCommitment {
 }
 
 impl Budget {
+    pub fn new(name: String) -> Self {
+        Budget {
+            name,
+            incomes: vec![],
+            expenditures: vec![],
+            next_income_id: IncomeId(0),
+            next_expenditure_id: ExpenditureId(0),
+            next_account_id: AccountId(0),
+            accounts: vec![],
+        }
+    }
+
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
     pub fn incomes(&self) -> &[Income] {
         &self.incomes
     }
@@ -133,7 +156,13 @@ impl Budget {
             return Err("Account not found in budget".to_string());
         }
 
-        let expenditure = Expenditure::new(self.next_expenditure_id, name, amount, account_id, commitment);
+        let expenditure = Expenditure::new(
+            self.next_expenditure_id,
+            name,
+            amount,
+            account_id,
+            commitment,
+        );
 
         self.next_expenditure_id = ExpenditureId(self.next_expenditure_id.0 + 1);
 

@@ -14,7 +14,7 @@ pub fn App() -> impl IntoView {
 
     view! {
         <div class="app">
-            <h1>My Budget</h1>
+            <h1>{move || budget.get().name().to_string()}</h1>
             <section class="summary">
                 <div class="card" style="flex-grow:1;">
                     <div class="card-title">"TOTAL INCOME"</div>
