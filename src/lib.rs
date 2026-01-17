@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use std::ops::Sub;
 
 #[derive(Default, Clone, Serialize, Deserialize)]
 pub struct Budget {
@@ -99,7 +98,7 @@ impl Budget {
     }
 
     pub fn balance(&mut self) -> f64 {
-        self.total_income().sub(self.total_expenditure())
+        self.total_income() - self.total_expenditure()
     }
 
     pub fn add_income(
@@ -171,12 +170,12 @@ impl Budget {
         Ok(())
     }
 
-    pub fn remove_income(&mut self, id: IncomeId) {
-        self.incomes.retain(|i| i.id != id);
+    pub fn remove_income(&mut self, id: &IncomeId) {
+        self.incomes.retain(|i| i.id != *id);
     }
 
-    pub fn remove_expenditure(&mut self, id: ExpenditureId) {
-        self.expenditures.retain(|e| e.id != id);
+    pub fn remove_expenditure(&mut self, id: &ExpenditureId) {
+        self.expenditures.retain(|e| e.id != *id);
     }
 
     pub fn remove_account(&mut self, id: AccountId) -> Result<(), String> {
@@ -184,7 +183,7 @@ impl Budget {
             return Err("Incomes linked to account".to_string());
         }
 
-        if self.incomes.iter().any(|i| i.account_id.eq(&id)) {
+        if self.expenditures.iter().any(|i| i.account_id.eq(&id)) {
             return Err("Expenditures linked to account".to_string());
         }
 
