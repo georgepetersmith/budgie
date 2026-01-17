@@ -1,20 +1,18 @@
-use crate::components::{add_expenditure::AddExpenditure, add_income::AddIncome};
+use crate::components::{
+    add_expenditure::AddExpenditure, add_income::AddIncome, budget_import::BudgetImport,
+};
 use budgie::{Account, Budget, Expenditure, Income};
 use leptos::prelude::*;
 
 #[component]
 pub fn App() -> impl IntoView {
-    let budget = {
-        let file_str = include_str!("../../my_budget.json");
-        serde_json::from_str::<Budget>(file_str).unwrap_or_default()
-    };
-
-    let budget = RwSignal::new(budget);
+    let budget = RwSignal::new(Budget::new("My budget".to_string()));
     provide_context(budget);
 
     view! {
         <div class="app">
             <h1>{move || budget.get().name().to_string()}</h1>
+            <BudgetImport />
             <section class="summary">
                 <div class="card" style="flex-grow:1;">
                     <div class="card-title">"TOTAL INCOME"</div>
