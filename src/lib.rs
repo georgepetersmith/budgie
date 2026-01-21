@@ -97,7 +97,7 @@ impl Budget {
         self.expenditures.iter().map(|i| i.amount).sum()
     }
 
-    pub fn balance(&mut self) -> f64 {
+    pub fn balance(&self) -> f64 {
         self.total_income() - self.total_expenditure()
     }
 
