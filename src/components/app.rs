@@ -1,6 +1,7 @@
 use crate::components::{budget_import::BudgetImport, ledger::Ledger};
 use budgie::Budget;
 use leptos::prelude::*;
+use rust_decimal::prelude::*;
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -28,8 +29,8 @@ pub fn App() -> impl IntoView {
                     <div class="card-title">"CURRENT BALANCE"</div>
                     <div
                         class="card-value"
-                        class:positive=move || budget.get().balance().ge(&0f64)
-                        class:negative=move || budget.get().balance().lt(&0f64)
+                        class:positive=move || budget.get().balance().ge(&Decimal::zero())
+                        class:negative=move || budget.get().balance().lt(&Decimal::zero())
                     >
                         {move || format!("£{:.2}", budget.get().balance())}
                     </div>

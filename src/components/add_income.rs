@@ -1,6 +1,7 @@
 use budgie::{Account, AccountId, Budget};
 use leptos::leptos_dom::logging::console_error;
 use leptos::prelude::*;
+use rust_decimal::prelude::*;
 
 #[component]
 pub fn AddIncome() -> impl IntoView {
@@ -53,7 +54,13 @@ pub fn AddIncome() -> impl IntoView {
                 on:click=move |_| {
                     budget
                         .update(move |b: &mut Budget| {
-                            if let Err(e) = b.add_income(name.get(), amount.get(), account.get()) {
+                            if let Err(e) = b
+                                .add_income(
+                                    name.get(),
+                                    Decimal::from_f64(amount.get()).unwrap(),
+                                    account.get(),
+                                )
+                            {
                                 console_error(&e);
                             }
                         });

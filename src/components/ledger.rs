@@ -1,6 +1,7 @@
 use crate::components::{add_expenditure::AddExpenditure, add_income::AddIncome};
 use budgie::{Budget, ExpenditureId, IncomeId};
 use leptos::prelude::*;
+use rust_decimal::Decimal;
 
 #[component]
 pub fn Ledger() -> impl IntoView {
@@ -135,6 +136,6 @@ impl IntoLedger for Budget {
     }
 }
 
-fn format_amount(amount: f64) -> String {
+fn format_amount(amount: Decimal) -> String {
     format!("£{:.2}", amount)
 }

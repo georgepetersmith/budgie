@@ -1,12 +1,13 @@
 use budgie::{Account, AccountId, Budget};
 use leptos::leptos_dom::logging::console_error;
 use leptos::prelude::*;
+use rust_decimal::prelude::*;
 
 #[component]
 pub fn AddExpenditure() -> impl IntoView {
     let budget = use_context::<RwSignal<Budget>>().unwrap();
     let (name, set_name) = signal(String::new());
-    let (amount, set_amount) = signal(0.0f64);
+    let (amount, set_amount) = signal(0f64);
     let (account, set_account) = signal(AccountId(0));
     view! {
         <div style="display:flex; flex-direction:column; gap:10px;">
@@ -54,7 +55,12 @@ pub fn AddExpenditure() -> impl IntoView {
                     budget
                         .update(move |b: &mut Budget| {
                             if let Err(e) = b
-                                .add_expenditure(name.get(), amount.get(), account.get(), None)
+                                .add_expenditure(
+                                    name.get(),
+                                    Decimal::from_f64(amount.get()).unwrap(),
+                                    account.get(),
+                                    None,
+                                )
                             {
                                 console_error(&e);
                             }

@@ -1,3 +1,4 @@
+use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
 #[derive(Default, Clone, Serialize, Deserialize)]
@@ -20,7 +21,7 @@ pub struct IncomeId(u32);
 pub struct Income {
     pub id: IncomeId,
     pub name: String,
-    pub amount: f64,
+    pub amount: Decimal,
     pub account_id: AccountId,
 }
 
@@ -33,7 +34,7 @@ pub struct ExpenditureId(u32);
 pub struct Expenditure {
     pub id: ExpenditureId,
     pub name: String,
-    pub amount: f64,
+    pub amount: Decimal,
     pub account_id: AccountId,
     pub commitment: Option<AccountCommitment>,
 }
@@ -89,22 +90,22 @@ impl Budget {
         self.accounts().iter().find(|a| a.id.eq(account_id))
     }
 
-    pub fn total_income(&self) -> f64 {
+    pub fn total_income(&self) -> Decimal {
         self.incomes.iter().map(|i| i.amount).sum()
     }
 
-    pub fn total_expenditure(&self) -> f64 {
+    pub fn total_expenditure(&self) -> Decimal {
         self.expenditures.iter().map(|i| i.amount).sum()
     }
 
-    pub fn balance(&self) -> f64 {
+    pub fn balance(&self) -> Decimal {
         self.total_income() - self.total_expenditure()
     }
 
     pub fn add_income(
         &mut self,
         name: String,
-        amount: f64,
+        amount: Decimal,
         account_id: AccountId,
     ) -> Result<(), String> {
         if String::is_empty(&name) || name.chars().all(char::is_whitespace) {
@@ -135,7 +136,7 @@ impl Budget {
     pub fn add_expenditure(
         &mut self,
         name: String,
-        amount: f64,
+        amount: Decimal,
         account_id: AccountId,
         commitment: Option<AccountCommitment>,
     ) -> Result<(), String> {
@@ -216,7 +217,7 @@ impl Budget {
 }
 
 impl Income {
-    fn new(id: IncomeId, name: String, amount: f64, account_id: AccountId) -> Income {
+    fn new(id: IncomeId, name: String, amount: Decimal, account_id: AccountId) -> Income {
         Income {
             id,
             name,
@@ -230,7 +231,7 @@ impl Expenditure {
     fn new(
         id: ExpenditureId,
         name: String,
-        amount: f64,
+        amount: Decimal,
         account_id: AccountId,
         commitment: Option<AccountCommitment>,
     ) -> Expenditure {

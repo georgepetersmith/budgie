@@ -11,3 +11,4 @@ serde = { version = "1.0.228", features = ["derive"] }
 web-sys = { version = "0.3.85", features = ["File", "FileList", "HtmlInputElement", "Window"] }
 js-sys = "0.3.85"
 wasm-bindgen-futures = "0.4.58"
+rust_decimal = "1.40.0"
